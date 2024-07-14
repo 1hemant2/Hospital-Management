@@ -1,13 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "lib": [
+      "es6"
+    ],
+    "target": "es2017",
     "module": "commonjs",
+    "outDir": "./build",
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "strictPropertyInitialization": false,
     "esModuleInterop": true,
-    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "outDir": "./dist",
-    "rootDir": "./src"
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
   },
   "include": [
     "src/**/*"

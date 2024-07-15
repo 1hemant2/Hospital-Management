@@ -16,13 +16,13 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
         if (typeof decryptedToken === "string" || typeof decryptedToken === "number") {
             throw new Error("Invalid token");
         }
+        // req. = decryptedToken.id;
         req.body.id = decryptedToken.id;
         next();
     } catch (error: any) {
         if (error.message === "jwt expired") {
             return res.status(401).send("Token has expired");
         } else {
-            // console.error(error);
             return res.status(401).send(error.message);
         }
     }

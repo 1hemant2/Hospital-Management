@@ -14,7 +14,7 @@ export class Pdf {
 
     @ManyToOne(() => Doctor)
     @JoinColumn()
-    doctor?: Doctor;
+    doctor!: Doctor;
 
     @Column({ type: 'varchar', length: 200 })
     filePath!: string

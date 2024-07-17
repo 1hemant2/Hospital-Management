@@ -38,14 +38,14 @@ export const createPatient = async (req: Request, res: Response) => {
             input.password = await bcrypt.hash(input.password, 10);
             const newPatient = patientRepository.create(input);
             await patientRepository.save(newPatient);
-            res.status(StatusCodes.CREATED).send(newPatient);
+            res.status(StatusCodes.CREATED).send({ newPatient, success: true });
         } else {
-            throw { message: 'Doctor already exist', statusCode: StatusCodes.CONFLICT };
+            throw { message: 'Patient already exist', statusCode: StatusCodes.CONFLICT };
         }
     } catch (error: any) {
         message = error.message || 'Something went wrong';
         statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
-        res.status(statusCode).send(message);
+        res.status(statusCode).send({ message, success: false });
     }
 }
 
@@ -77,7 +77,7 @@ export const getPatient = async (req: Request, res: Response) => {
                 };
                 const secretKey: string = process.env.SECRET_KEY || "dasfas";
                 const token = jwt.sign(doctorPayload, secretKey, { expiresIn: '30d' });
-                res.status(StatusCodes.OK).send({ message: 'login successful', token });
+                res.status(StatusCodes.OK).send({ message: 'login successful', token, success: true });
             } else {
                 throw { message: 'Invalid doctorname or password.', statusCode: StatusCodes.UNAUTHORIZED }
             }
@@ -87,6 +87,6 @@ export const getPatient = async (req: Request, res: Response) => {
     } catch (error: any) {
         statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR
         message = error.message || 'Something went wrong';
-        res.status(statusCode).send(message);
+        res.status(statusCode).send({ message, success: false });
     }
 }

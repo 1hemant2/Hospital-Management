@@ -1,15 +1,80 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { loginApi } from '../../api/patientApi';
+import Alert from '../../component/Alert';
+
+
+interface LoginData {
+    email: string;
+    password: string;
+}
 
 const Login: React.FC = () => {
+    const navigate = useNavigate();
+    const [showAlert, setShowAlert] = useState(false);
+    const [message, setMessage] = useState('');
+    const [data, setData] = useState<LoginData>({
+        email: '',
+        password: ''
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            const res = await loginApi(data);
+            console.log(res);
+            if (!res.success) {
+                throw { message: res.message };
+            } else {
+                localStorage.setItem('token', res.token);
+                navigate('/pt');
+            }
+        } catch (error: any) {
+            setMessage(error.message);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 2000);
+        }
+    };
+
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
-            <div className='border border-gray-300 bg-white rounded-lg shadow-lg p-8 flex flex-col max-w-md w-full space-y-6'>
+            <Alert message={message} showAlert={showAlert}></Alert>
+            <div className="border border-gray-300 bg-white rounded-lg shadow-lg p-8 flex flex-col max-w-md w-full space-y-6">
                 <h2 className="text-2xl font-bold text-center">Patient Login</h2>
-                <div className='flex space-x-4'>
-                </div>
-                <input type="email" className='border border-gray-300 rounded-lg p-2 w-full' placeholder="Email" />
-                <input type="password" className='border border-gray-300 rounded-lg p-2 w-full' placeholder="Password" />
-                <button type='submit' className='bg-black text-white py-2 px-4 rounded-lg hover:bg-slate-700'>Login</button>
+                <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
+                    <input
+                        type="email"
+                        name="email"
+                        className="border border-gray-300 rounded-lg p-2 w-full"
+                        placeholder="Email"
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        className="border border-gray-300 rounded-lg p-2 w-full"
+                        placeholder="Password"
+                        onChange={handleChange}
+                    />
+                    <button
+                        type="submit"
+                        className="bg-black text-white py-2 px-4 rounded-lg hover:bg-slate-700"
+                    >
+                        Login
+                    </button>
+                </form>
+                <div>Don't have an account?<span className="ml-2 text-blue-500 cursor-pointer" onClick={() => navigate('/pt/register')}>Register</span></div>
             </div>
         </div>
     );

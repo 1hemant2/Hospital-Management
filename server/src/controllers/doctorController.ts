@@ -36,16 +36,17 @@ export const createDoctor = async (req: Request, res: Response) => {
                 throw { message: 'password length must be 4 digit', statusCode: StatusCodes.BAD_REQUEST };
             }
             input.password = await bcrypt.hash(input.password, 10);
+            input.firstName = 'Dr.' + input.firstName;
             const newDoctor = doctorRepository.create(input);
             await doctorRepository.save(newDoctor);
-            res.status(StatusCodes.CREATED).send(newDoctor);
+            res.status(StatusCodes.CREATED).send({ newDoctor, success: true });
         } else {
             throw { message: 'Doctor already exist', statusCode: StatusCodes.CONFLICT };
         }
     } catch (error: any) {
         message = error.message || 'Something went wrong';
         statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
-        res.status(statusCode).send(message);
+        res.status(statusCode).send({ message, success: false });
     }
 }
 
@@ -77,9 +78,9 @@ export const getDoctor = async (req: Request, res: Response) => {
                 };
                 const secretKey: string = process.env.SECRET_KEY || "dasfas";
                 const token = jwt.sign(doctorPayload, secretKey, { expiresIn: '30d' });
-                res.status(StatusCodes.OK).send({ message: 'login successful', token });
+                res.status(StatusCodes.OK).send({ message: 'login successful', token, success: true });
             } else {
-                throw { message: 'Invalid doctorname or password.', statusCode: StatusCodes.UNAUTHORIZED }
+                throw { message: 'Invalid email or password.', statusCode: StatusCodes.UNAUTHORIZED }
             }
         } else {
             throw { message: `Doctor doesn't exist`, statusCode: StatusCodes.NOT_FOUND }
@@ -87,6 +88,6 @@ export const getDoctor = async (req: Request, res: Response) => {
     } catch (error: any) {
         statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR
         message = error.message || 'Something went wrong';
-        res.status(statusCode).send(message);
+        res.status(statusCode).send({ message, success: false });
     }
 }

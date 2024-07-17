@@ -24,8 +24,6 @@ const Card5: React.FC<Card5Props> = ({ icon, name, email }) => {
                 <p className="text-xl font-semibold ">Your Assigned Doctor</p>
                 <p className='text-gray-500 font-medium mt-2'>{name} is your primary care physician. You can contact her directly with any questions or concerns.</p>
             </div>
-
-
         </div>
     );
 };

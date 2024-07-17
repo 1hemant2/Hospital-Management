@@ -6,7 +6,10 @@ export class Doctor {
     id!: string
 
     @Column({ type: 'varchar', length: 100 })
-    name!: string
+    firstName!: string
+
+    @Column({ type: 'varchar', length: 100 })
+    lastName!: string
 
     @Column({ type: 'varchar', length: 100, unique: true })
     email!: string

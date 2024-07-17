@@ -1,11 +1,14 @@
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+
 import { AppDataSource } from "./config/data-source";
 import doctorRoutes from './routes/doctorRoute';
 import pdfRoutes from './routes/pdfRoute';
 import patientRoutes from './routes/patientRoute';
 const app = express();
+import cors from 'cors'
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

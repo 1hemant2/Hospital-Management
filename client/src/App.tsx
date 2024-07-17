@@ -8,6 +8,7 @@ import DrHome from './pages/Doctor/Home';
 import AvailablePatient from './pages/Doctor/AvailablePatient';
 import AssignedPatient from './pages/Doctor/AssignedPatient';
 import AvailablePdf from './pages/Doctor/AvailablePdf';
+import PtHome from './pages/Patient/Home';
 function App() {
 
   return (
@@ -19,8 +20,9 @@ function App() {
         <Route path='/dr/available-patient' element={<AvailablePatient></AvailablePatient>}></Route>
         <Route path='/dr/assigned-patient' element={<AssignedPatient></AssignedPatient>}></Route>
         <Route path='/dr/available-pdf' element={<AvailablePdf></AvailablePdf>}></Route>
-        <Route path="pt-login" element={<PtLogin></PtLogin>}></Route>
         <Route path="/" element={<DrHome></DrHome>}></Route>
+        <Route path="pt-login" element={<PtLogin></PtLogin>}></Route>
+        <Route path="/pt" element={<PtHome></PtHome>}></Route>
       </Routes>
     </BrowserRouter>
   )

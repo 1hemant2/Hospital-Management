@@ -2,8 +2,17 @@ import React from 'react';
 import Card5 from '../../component/Card5';
 import Card6 from '../../component/Card6';
 import Footer from '../../component/Footer';
+import { useUserDetils } from '../../hooks/useCurrentUser';
+import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
+    const data = useUserDetils();
+    const navigate = useNavigate();
+    if (!data) {
+        navigate('/pt/login');
+    } else if (data?.specialty) {
+        navigate('/dr/login');
+    }
     return (
         <div>
             <div className=" border-t border-gray-300 shadow-md p-2">

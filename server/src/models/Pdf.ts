@@ -16,8 +16,11 @@ export class Pdf {
     @JoinColumn()
     doctor!: Doctor;
 
+    @Column()
+    name!: String;
+
     @Column({ type: 'varchar', length: 200 })
-    filePath!: string
+    filePath!: String;
 
     @CreateDateColumn()
     createdAt!: Date

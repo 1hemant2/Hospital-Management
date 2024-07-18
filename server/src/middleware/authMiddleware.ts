@@ -14,16 +14,15 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
         const decryptedToken = jwt.verify(token, secret);
         if (typeof decryptedToken === "string" || typeof decryptedToken === "number") {
-            throw new Error("Invalid token");
+            throw new Error("User doesn't exist");
         }
-        // req. = decryptedToken.id;
         req.body.id = decryptedToken.id;
         next();
     } catch (error: any) {
         if (error.message === "jwt expired") {
             return res.status(401).send("Token has expired");
         } else {
-            return res.status(401).send(error.message);
+            return res.status(401).send({ message: error.message, success: false });
         }
     }
 }

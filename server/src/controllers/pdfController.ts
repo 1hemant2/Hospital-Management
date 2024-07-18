@@ -77,15 +77,15 @@ const upload = multer({
 
 const uploadPdf = async (req: Request, res: Response) => {
     try {
-        const result = await new Promise<string | { message: string, statusCode: number }>((resolve, reject) => {
+        const result = await new Promise<string | { message: string, success: boolean }>((resolve, reject) => {
             upload(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
-                    return reject({ message: err.message, statusCode: StatusCodes.BAD_REQUEST });
+                    return reject({ message: err.message, success: false });
                 } else if (err) {
-                    return reject({ message: err.message, statusCode: StatusCodes.BAD_REQUEST });
+                    return reject({ message: err.message, success: false });
                 } else {
-                    if (req.file == undefined) {
-                        return reject({ message: 'No file selected', statusCode: StatusCodes.BAD_REQUEST });
+                    if (req.file === undefined) {
+                        return reject({ message: 'No file selected', success: false });
                     } else {
                         const filePath = path.join(__dirname, '../../', 'pdfUpload', req.file.filename);
                         uploadToCloud(filePath)
@@ -94,10 +94,10 @@ const uploadPdf = async (req: Request, res: Response) => {
                                 fs.unlink(filePath, (err) => {
                                     if (err) throw err;
                                 });
-                                return resolve(url);
+                                return resolve({ message: url, success: true });
                             })
                             .catch((uploadError) => {
-                                return reject({ message: uploadError.message, statusCode: StatusCodes.INTERNAL_SERVER_ERROR });
+                                return reject({ message: uploadError.message, success: false });
                             });
                     }
                 }
@@ -121,14 +121,56 @@ const uploadPdf = async (req: Request, res: Response) => {
 export const uploadDrFile = async (req: Request, res: Response) => {
     try {
         const id = req.body.id;
+        // const name = req.body.name;
+        const name = 'Hemant Resume';
+        // console.log();
+        // console.log('126', name);
+        console.log(req.body);
         const url = await uploadPdf(req, res);
-        const result = pdfRepository.create({
-            doctor: id,
-            filePath: url,
-        })
-        await pdfRepository.save(result);
-        res.status(StatusCodes.CREATED).send('pdf uploaded successfully');
+        // console.log(url);
+        if (!url.success) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(url.message);
+        } else {
+            const result = pdfRepository.create({
+                doctor: id,
+                filePath: url.message,
+                name: name
+            })
+            await pdfRepository.save(result);
+            res.status(StatusCodes.CREATED).send('pdf uploaded successfully');
+        }
     } catch (error: any) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error.message);
+    }
+}
+
+export const getDrFile = async (req: Request, res: Response) => {
+    try {
+        let page: number = parseInt(req.params.pageNo);
+        const id = req.body.id;
+        const data = await pdfRepository.find({
+            where: { doctor: { id: id } },
+            skip: (page - 1) * 4,
+            take: 4
+        });
+
+        res.status(StatusCodes.OK).send({ success: true, data: data });
+    } catch (error) {
+        console.log(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ success: false, message: 'something went wrong' });
+    }
+}
+export const getTotalPage = async (req: Request, res: Response) => {
+    try {
+        const id = req.body.id;
+        const data = await pdfRepository.find({
+            where: { doctor: { id: id } },
+        });
+        const sz = data.length % 4 === 0 ? data.length / 4 : (data.length / 4) + 1;
+
+        res.status(StatusCodes.OK).send({ success: true, data: sz });
+    } catch (error) {
+        console.log(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ success: false, message: 'something went wrong' });
     }
 }

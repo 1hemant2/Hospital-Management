@@ -11,3 +11,8 @@ export const axiosInstances = axios.create({
         authorization: `Bearer ${getToken()}`
     }
 })
+
+axiosInstances.interceptors.request.use((config) => {
+    config.headers.authorization = `Bearer ${getToken()}`;
+    return config;
+});

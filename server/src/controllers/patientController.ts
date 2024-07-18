@@ -82,7 +82,7 @@ export const getPatient = async (req: Request, res: Response) => {
                 throw { message: 'Invalid doctorname or password.', statusCode: StatusCodes.UNAUTHORIZED }
             }
         } else {
-            throw { message: `Doctor doesn't exist`, statusCode: StatusCodes.NOT_FOUND }
+            throw { message: `Patient doesn't exist`, statusCode: StatusCodes.NOT_FOUND }
         }
     } catch (error: any) {
         statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR

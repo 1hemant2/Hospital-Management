@@ -12,12 +12,12 @@ interface loginPayload {
     email: string,
     password: string
 }
+
 export const registerApi = async (payload: registerPayload) => {
     try {
         const res = await axiosInstances.post('/doctor/register', payload);
         return res.data;
     } catch (error: any) {
-        // console.log(error);
         return error.response.data;
     }
 }

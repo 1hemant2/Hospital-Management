@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const AvailablePdf: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
-    const [totalPages, setTotlaPages] = useState<number>();
+    const [totalPages, setTotlaPages] = useState<number>(0);
     const navigate = useNavigate()
 
     const handlePageChange = (page: number) => {
@@ -32,7 +32,6 @@ const AvailablePdf: React.FC = () => {
     const totalPageFn = async () => {
         try {
             const res = await totalPageApi();
-            // console.log(res.data);
             setTotlaPages(parseInt(res.data));
         } catch (error) {
 

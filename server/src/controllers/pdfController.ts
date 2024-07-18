@@ -146,8 +146,8 @@ export const uploadDrFile = async (req: Request, res: Response) => {
 
 export const getDrFile = async (req: Request, res: Response) => {
     try {
-        let page: number = parseInt(req.params.pageNo);
         const id = req.body.id;
+        let page: number = parseInt(req.params.pageNo);
         const data = await pdfRepository.find({
             where: { doctor: { id: id } },
             skip: (page - 1) * 4,
@@ -167,7 +167,6 @@ export const getTotalPage = async (req: Request, res: Response) => {
             where: { doctor: { id: id } },
         });
         const sz = data.length % 4 === 0 ? data.length / 4 : (data.length / 4) + 1;
-
         res.status(StatusCodes.OK).send({ success: true, data: sz });
     } catch (error) {
         console.log(error);

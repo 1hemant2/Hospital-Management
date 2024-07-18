@@ -26,17 +26,23 @@ let message: string;
 
 export const unassignedPatients = async (req: Request, res: Response) => {
     try {
+        let page: number = parseInt(req.params.pageNo);
         const patientRepository = AppDataSource.getRepository(Patient);
-
-        const availablePatients = await patientRepository.createQueryBuilder('patient')
+        const query = patientRepository.createQueryBuilder('patient')
             .leftJoinAndSelect('patient.doctorPatient', 'doctorPatient')
             .where('doctorPatient.id IS NULL')
-            .getMany();
-        res.status(StatusCodes.OK).send({ success: true, availablePatients });
+            .skip((page - 1) * 4)
+            .take(4);
+        let [availablePatients, total] = await query.getManyAndCount();
+        total = total % 4 === 0 ? total / 4 : Math.ceil((total / 4));
+        if (availablePatients) {
+            return res.status(StatusCodes.OK).send({ success: true, availablePatients, total });
+        }
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error, success: false });
     }
 }
+
 
 export const assignPatient = async (req: Request, res: Response) => {
     try {
@@ -46,14 +52,11 @@ export const assignPatient = async (req: Request, res: Response) => {
             throw { statusCode: StatusCodes.BAD_REQUEST, message: 'doctor & patientId required' };
         }
         const relation = await DoctorPatientRepository.findOne({ where: { patient: { id: patientId } } });
-        console.log('error here');
         if (!relation) {
             const newRelation = DoctorPatientRepository.create({ doctor: doctorId, patient: patientId });
-            console.log(newRelation);
             await DoctorPatientRepository.save(newRelation);
             return res.status(StatusCodes.CREATED).send({ success: true, message: 'patient assigned successfull' });
         } else {
-            console.log('hi');
             throw { message: 'already patient assigned', statusCode: StatusCodes.BAD_REQUEST };
         }
     } catch (error: any) {
@@ -72,7 +75,6 @@ export const removePatient = async (req: Request, res: Response) => {
         const relation = await DoctorPatientRepository.findOne({ where: { patient: { id: patientId } } });
         if (relation) {
             await DoctorPatientRepository.delete({ doctor: doctorId, patient: patientId });
-            // await DoctorPatientRepository.save(newRelation);
             return res.status(StatusCodes.CREATED).send({ success: true, message: 'patient assigned successfull' });
         } else {
             throw { message: 'patient not exist', statusCode: StatusCodes.BAD_REQUEST };
@@ -86,12 +88,15 @@ export const removePatient = async (req: Request, res: Response) => {
 export const assignedPatients = async (req: Request, res: Response) => {
     try {
         const doctorId = req.body.id;
+        let page: number = parseInt(req.params.pageNo);
         if (!doctorId) {
             throw { statusCode: StatusCodes.BAD_REQUEST, message: 'doctorid is  required' };
         }
         const patients = await DoctorPatientRepository.find({
             where: { doctor: { id: doctorId } },
-            relations: ['patient']
+            relations: ['patient'],
+            skip: (page - 1) * 4,
+            take: 4
         });
         if (patients) {
             return res.status(StatusCodes.OK).send({ success: true, data: patients });

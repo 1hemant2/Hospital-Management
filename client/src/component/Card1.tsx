@@ -43,6 +43,12 @@ const Card1: React.FC<Card1Props> = ({ heading, content, buttonName, action }) =
             case 'viewPdf':
                 navigate('/dr/available-pdf');
                 break;
+            case 'avilablePatients':
+                navigate('/dr/available-patient')
+                break;
+            case 'assignPatients':
+                navigate('/dr/assigned-patient')
+                break;
             default:
                 break;
         }

@@ -7,6 +7,7 @@ import doctorRoutes from './routes/doctorRoute';
 import pdfRoutes from './routes/pdfRoute';
 import patientRoutes from './routes/patientRoute';
 import userRoute from './routes/userDetail';
+import doctorPatientRoute from './routes/doctorPatientRoute';
 const app = express();
 import cors from 'cors'
 app.use(cors());
@@ -18,6 +19,7 @@ AppDataSource.initialize().then(() => {
     app.use('/pdf', pdfRoutes);
     app.use('/patient', patientRoutes);
     app.use('/user', userRoute);
+    app.use('/doctoPatient', doctorPatientRoute);
     const PORT = process.env.PORT || 8084
     app.listen(PORT, () => {
         console.log("Server is running 😀😀✅😁", PORT);

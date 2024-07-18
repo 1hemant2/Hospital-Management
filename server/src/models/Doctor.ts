@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { DoctorPatient } from './DoctorPatient';
+import { Patient } from './Patient';
 
 @Entity()
 export class Doctor {
@@ -19,4 +21,7 @@ export class Doctor {
 
     @Column({ type: 'varchar', length: 100 })
     specialty!: string
+
+    @OneToMany(() => DoctorPatient, (doctorPatient) => doctorPatient.doctor)
+    doctorPatients: DoctorPatient[];
 }

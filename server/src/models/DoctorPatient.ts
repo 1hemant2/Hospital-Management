@@ -5,7 +5,7 @@ PRIMARY KEY (DoctorID, PatientID),
 FOREIGN KEY (DoctorID) REFERENCES Doctors(DoctorID),
 FOREIGN KEY (PatientID) REFERENCES Patients(PatientID)
 */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { Doctor } from './Doctor';
 import { Patient } from './Patient';
 
@@ -15,11 +15,11 @@ export class DoctorPatient {
     @PrimaryGeneratedColumn("uuid")
     id!: string
 
-    @ManyToOne(() => Doctor)
+    @ManyToOne(() => Doctor, (doctor) => doctor.doctorPatients)
     @JoinColumn()
-    doctor?: Doctor
+    doctor!: Doctor
 
-    @ManyToOne(() => Patient)
+    @OneToOne(() => Patient, (patient) => patient.doctorPatient)
     @JoinColumn()
-    patient?: Patient
+    patient!: Patient
 }

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { DoctorPatient } from './DoctorPatient';
 
 @Entity()
 export class Patient {
@@ -16,4 +17,8 @@ export class Patient {
 
     @Column({ type: 'varchar', length: 225 })
     password!: string
+
+
+    @OneToOne(() => DoctorPatient, (doctorPatient) => doctorPatient.patient)
+    doctorPatient?: DoctorPatient;
 }

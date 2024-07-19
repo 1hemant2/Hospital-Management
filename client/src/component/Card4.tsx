@@ -8,7 +8,7 @@ interface Card4Props {
 const Card4: React.FC<Card4Props> = ({ heading, url }) => {
     // console.log(heading, url);
     return (
-        <div className="p-4 border border-gray-300 shadow-xl rounded-lg w-80 h-48 relative">
+        <div className="p-4 border border-gray-300 shadow-xl rounded-lg  w-64 md:w-96 sm:80 h-48 relative">
             <div className="text-xl font-medium">{heading}</div>
             <div className='h-28 w-28'>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#6b6a6a" className="text-gray-600">

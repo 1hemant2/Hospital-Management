@@ -52,11 +52,11 @@ const Register: React.FC = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
+        <div className="flex justify-center items-center h-screen bg-blue p-4 sm:p-0">
             <Alert message={message} showAlert={showAlert}></Alert>
-            <form onSubmit={handleSubmit}>
-                <div className='border border-gray-300 bg-white rounded-lg shadow-lg p-8 flex flex-col max-w-md w-full space-y-6'>
-                    <h2 className="text-2xl font-bold text-center">Doctor Sign-Up</h2>
+            <div className='border border-gray-300 bg-white rounded-lg shadow-lg sm:p-8 pt-16 pb-16 flex flex-col max-w-md w-full space-y-6'>
+                <h2 className="text-2xl font-bold text-center">Doctor Sign-Up</h2>
+                <form onSubmit={handleSubmit} className='flex flex-col space-y-6 p-4'>
                     <div className='flex space-x-4'>
                         <input type="text" className='border border-gray-300 rounded-lg p-2 w-full' placeholder="First Name" name='firstName' onChange={handleChange} />
                         <input type="text" className='border border-gray-300 rounded-lg p-2 w-full' placeholder="Last Name" name='lastName' onChange={handleChange} />
@@ -64,10 +64,10 @@ const Register: React.FC = () => {
                     <input type="email" className='border border-gray-300 rounded-lg p-2 w-full' placeholder="Email" name='email' onChange={handleChange} />
                     <input type="password" className='border border-gray-300 rounded-lg p-2 w-full' placeholder="Password" name='password' onChange={handleChange} />
                     <input type="text" className='border border-gray-300 rounded-lg p-2 w-full' placeholder="Specialty" name='specialty' onChange={handleChange} />
-                    <button type='submit' className='bg-black text-white py-2 px-4 rounded-lg hover:bg-slate-700'>Register</button>
-                    <div className='ml-2'>Already have account?<span className='ml-2 text-blue-500 cursor-pointer' onClick={() => navigate('/dr/login')}>Login</span> </div>
-                </div>
-            </form>
+                    <button type='submit' className='bg-black text-white py-2 px-4 rounded-lg hover:bg-slate-700 '>Register</button>
+                </form>
+                <div className='ml-8'>Already have account?<span className='ml-2 text-blue-500 cursor-pointer' onClick={() => navigate('/dr/login')}>Login</span> </div>
+            </div>
         </div>
     );
 };

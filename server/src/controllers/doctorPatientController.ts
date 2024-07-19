@@ -3,15 +3,11 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source";
 const DoctorPatientRepository = AppDataSource.getRepository(DoctorPatient);
 import { StatusCodes } from "http-status-codes";
-import { Doctor } from "../models/Doctor";
 import { Patient } from "../models/Patient";
-import { error } from "console";
 /**
  * constants
  */
 let statusCode: number;
-let message: string;
-
 /**
  * Create a new patient.
  *
@@ -92,14 +88,16 @@ export const assignedPatients = async (req: Request, res: Response) => {
         if (!doctorId) {
             throw { statusCode: StatusCodes.BAD_REQUEST, message: 'doctorid is  required' };
         }
-        const patients = await DoctorPatientRepository.find({
+        const [patients, count] = await DoctorPatientRepository.findAndCount({
             where: { doctor: { id: doctorId } },
             relations: ['patient'],
             skip: (page - 1) * 4,
             take: 4
         });
+        // console.log(patients);
+        const totalPage = count % 4 === 0 ? count / 4 : Math.ceil(count / 4);
         if (patients) {
-            return res.status(StatusCodes.OK).send({ success: true, data: patients });
+            return res.status(StatusCodes.OK).send({ success: true, data: patients, totalPage });
         } else {
             throw { message: 'something went wrong', statusCode: StatusCodes.INTERNAL_SERVER_ERROR };
         }

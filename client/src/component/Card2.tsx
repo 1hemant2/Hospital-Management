@@ -25,7 +25,7 @@ const Card2: React.FC<Card1Props> = ({ firstName, lastName, email, id }) => {
     }
 
     return (
-        <div className="p-4 border border-gray-300 shadow-xl rounded-lg w-80 h-48 relative">
+        <div className="p-4 border border-gray-300 shadow-xl rounded-lg  w-64 md:w-96 sm:80 h-48 relative">
             <div className="text-2xl font-medium">{firstName + " " + lastName}</div>
             <div className='font-normal text-slate-500 mt-1'>{email}</div>
             <button

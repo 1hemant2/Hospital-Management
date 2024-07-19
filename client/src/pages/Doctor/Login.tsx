@@ -48,11 +48,11 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
+        <div className="flex justify-center items-center h-screen bg-blue p-4 sm:p-00">
             <Alert message={message} showAlert={showAlert}></Alert>
-            <div className="border border-gray-300 bg-white rounded-lg shadow-lg p-8 flex flex-col max-w-md w-full space-y-6">
+            <div className="border border-gray-300 bg-white rounded-lg shadow-lg sm:p-8 pt-16 pb-16 flex flex-col max-w-md w-full space-y-6">
                 <h2 className="text-2xl font-bold text-center">Doctor Login</h2>
-                <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
+                <form onSubmit={handleSubmit} className="flex flex-col space-y-6 p-4">
                     <input
                         type="email"
                         name="email"
@@ -74,7 +74,7 @@ const Login: React.FC = () => {
                         Login
                     </button>
                 </form>
-                <div>Don't have an account?<span className="ml-2 text-blue-500 cursor-pointer" onClick={() => navigate('/dr/register')}>Register</span></div>
+                <div className='ml-8'>Don't have an account?<span className="ml-2 text-blue-500 cursor-pointer" onClick={() => navigate('/dr/register')}>Register</span></div>
             </div>
         </div>
     );

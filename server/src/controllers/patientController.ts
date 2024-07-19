@@ -79,7 +79,7 @@ export const getPatient = async (req: Request, res: Response) => {
                 const token = jwt.sign(doctorPayload, secretKey, { expiresIn: '30d' });
                 res.status(StatusCodes.OK).send({ message: 'login successful', token, success: true });
             } else {
-                throw { message: 'Invalid doctorname or password.', statusCode: StatusCodes.UNAUTHORIZED }
+                throw { message: 'Invalid patient email or password.', statusCode: StatusCodes.UNAUTHORIZED }
             }
         } else {
             throw { message: `Patient doesn't exist`, statusCode: StatusCodes.NOT_FOUND }

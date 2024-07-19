@@ -9,6 +9,7 @@ import AvailablePatient from './pages/Doctor/AvailablePatient';
 import AssignedPatient from './pages/Doctor/AssignedPatient';
 import AvailablePdf from './pages/Doctor/AvailablePdf';
 import PtHome from './pages/Patient/Home';
+import Home from './pages/Home';
 function App() {
 
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/pt/register" element={<PtRegister></PtRegister>}></Route>
         <Route path="pt/login" element={<PtLogin></PtLogin>}></Route>
         <Route path="/pt" element={<PtHome></PtHome>}></Route>
+        <Route path="/" element={<Home></Home>}></Route>
 
       </Routes>
     </BrowserRouter>

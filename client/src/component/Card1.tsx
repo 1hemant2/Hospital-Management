@@ -14,7 +14,6 @@ const uploadPdfFn = () => {
     const input = document.createElement('input');
     input.type = 'file';
 
-    // Set accept attribute to only allow PDF files
     input.accept = 'application/pdf';
 
     // Listen for file selection
@@ -23,8 +22,6 @@ const uploadPdfFn = () => {
         if (file) {
             console.log('Selected file:', file.name);
             const res = await uploadPdfApi({ name: file.name, pdf: file });
-            // console.log(res);
-            // Here you can perform further actions with the selected file
         }
     });
 

@@ -3,7 +3,7 @@ import SearchBar from '../../component/SearchBar';
 import Card3 from '../../component/Card3';
 import Pagination from '../../component/Pagination';
 import Footer from '../../component/Footer';
-import { assignedPatientsApi } from '../../api/doctorPatientApi';
+import { assignedPatientsApi, searchAssignedPatientApi } from '../../api/doctorPatientApi';
 import { useNavigate } from 'react-router-dom';
 
 const AssignedPatient: React.FC = () => {
@@ -28,7 +28,16 @@ const AssignedPatient: React.FC = () => {
             console.log(error.message);
         }
     }
+    const searchAssignPatient = async (input: string) => {
+        try {
+            const res = await searchAssignedPatientApi(input);
+            if (res.success) {
+                setData(res.data);
+            }
+        } catch (error) {
 
+        }
+    }
     useEffect(() => {
         assignPatientsFn();
     }, [currentPage]);
@@ -39,7 +48,7 @@ const AssignedPatient: React.FC = () => {
                     onClick={() => navigate('/dr')}>Back to Dashboard</button>
                 <div className="flex justify-center">
                     <div className="md:max-w-4xl  flex flex-col items-center ">
-                        <SearchBar placeholderValue="Search by patient email..." />
+                        <SearchBar placeholderValue="Search by patient email..." action='searchAssignPatients' fn={searchAssignPatient} />
                         <div className="grid grid-cols-1 sm:grid-cols-2 mt-16 gap-y-5 gap-x-4 mb-6">
                             {
                                 data?.map((d: any) => (

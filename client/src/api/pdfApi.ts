@@ -23,8 +23,8 @@ export const getPdfApi = async (page: number) => {
     try {
         const data = await axiosInstances.get(`/pdf/upload/${page}`);
         return data.data;
-    } catch (error) {
-        return error;
+    } catch (error: any) {
+        return error.response.data;
     }
 }
 
@@ -33,7 +33,18 @@ export const totalPageApi = async () => {
     try {
         const data = await axiosInstances.get(`/pdf/page`);
         return data.data;
-    } catch (error) {
-        return error;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+
+export const searchPdfApi = async (name: string) => {
+    try {
+        const data = await axiosInstances.get('/pdf/search', {
+            params: { name }
+        });
+        return data.data;
+    } catch (error: any) {
+        return error.response.data;
     }
 }

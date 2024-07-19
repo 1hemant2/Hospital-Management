@@ -6,6 +6,7 @@ import cloudinary from "../config/cloudinary";
 import fs from "fs";
 import { Pdf } from "../models/Pdf";
 import { AppDataSource } from "../config/data-source";
+import { STATUS_CODES } from "http";
 const pdfRepository = AppDataSource.getRepository(Pdf);
 
 
@@ -160,24 +161,17 @@ export const getDrFile = async (req: Request, res: Response) => {
 export const searchDrFile = async (req: Request, res: Response) => {
     try {
         const id = req.body.id;
-        const name: string = req.body.name;
-        if (!name) {
+        const input: string = req.query.name as string;
+        if (!input) {
             throw { statusCode: StatusCodes.NOT_FOUND, message: 'No file found' }
         }
-        let page: number = 1;
         const data = await pdfRepository.find({
-            where: { doctor: { id: id }, name: name },
-            skip: (page - 1) * 4,
-            take: 4,
-            order: {
-                createdAt: "DESC"
-            }
+            where: { doctor: { id: id }, name: input },
         });
-
-        res.status(StatusCodes.OK).send({ success: true, data: data });
+        return res.status(StatusCodes.OK).send({ success: true, data: data });
     } catch (error: any) {
-        console.log(error);
-        res.status(error.statuCode).send({ success: false, error: error.message });
+        const statuCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+        res.status(statuCode).send({ success: false, mesage: error.message || 'Something went wrong' });
     }
 }
 export const getTotalPage = async (req: Request, res: Response) => {

@@ -4,7 +4,7 @@ import Card2 from '../../component/Card2';
 import Pagination from '../../component/Pagination';
 import Footer from '../../component/Footer';
 import { useNavigate } from 'react-router-dom';
-import { avilablePatientApi } from '../../api/doctorPatientApi';
+import { avilablePatientApi, searchAvailablePatientApi } from '../../api/doctorPatientApi';
 
 const AvailablePatient: React.FC = () => {
     const navigate = useNavigate();
@@ -26,6 +26,21 @@ const AvailablePatient: React.FC = () => {
             // console.log(error.message);
         }
     }
+    const searchAvailablePatient = async (input: string) => {
+        try {
+            // if(input.length > 0) {
+
+            // }
+            const res = await searchAvailablePatientApi(input);
+            // console.log(res);
+            if (res.success) {
+                setData(res.availablePatients);
+            }
+            console.log(res);
+        } catch (error) {
+
+        }
+    }
 
     useEffect(() => {
         availabePatientsFn();
@@ -37,7 +52,7 @@ const AvailablePatient: React.FC = () => {
                 onClick={() => navigate('/dr')}>Back to Dashboard</button>
             <div className="flex justify-center">
                 <div className="md:max-w-4xl sm:max-w-xl w-full flex flex-col items-center ">
-                    <SearchBar placeholderValue="Search by patient email..." />
+                    <SearchBar placeholderValue="Search by patient email..." action='searchAvailablePatients' fn={searchAvailablePatient} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 mt-16 gap-y-5 gap-x-4 mb-6">
                         {
                             data.map((d: any) => (

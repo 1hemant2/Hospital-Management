@@ -3,7 +3,7 @@ import SearchBar from '../../component/SearchBar';
 import Card4 from '../../component/Card4';
 import Pagination from '../../component/Pagination';
 import Footer from '../../component/Footer';
-import { getPdfApi, totalPageApi } from '../../api/pdfApi';
+import { getPdfApi, searchPdfApi, totalPageApi } from '../../api/pdfApi';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -38,18 +38,31 @@ const AvailablePdf: React.FC = () => {
         }
 
     }
+    const searchPdfFn = async (input: string) => {
+        try {
+            const res = await searchPdfApi(input);
+            console.log(res);
+            if (res.success) {
+                setData(res.data);
+            }
+        } catch (error) {
+
+        }
+    }
     useEffect(() => {
         getPdf();
     }, [currentPage]);
     useEffect(() => {
         totalPageFn();
     }, [])
+
+
     return (
         <div>
             <button className='max-w-md bg-[#2b2a2a] text-white p-2 pl-4 pr-4 m-4 mt-6 rounded-md shadow-md' onClick={() => navigate('/dr')}>Back to Dashboard</button>
             <div className="flex justify-center">
                 <div className="md:max-w-4xl   flex flex-col items-center ">
-                    <SearchBar placeholderValue="Search by pdf name..." />
+                    <SearchBar placeholderValue="Search by pdf name..." action='searchPdf' fn={searchPdfFn} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 mt-16 gap-y-5 gap-x-4 mb-6">
                         {
                             data?.map((datas: any) => (

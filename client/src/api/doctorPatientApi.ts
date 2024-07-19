@@ -46,3 +46,25 @@ export const assignedDoctorApi = async () => {
         return error.response.data;
     }
 }
+
+export const searchAssignedPatientApi = async (email: string) => {
+    try {
+        const data = await axiosInstances.get('/doctoPatient/searchassignedPatients', {
+            params: { email }
+        });
+        return data.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+export const searchAvailablePatientApi = async (email: string) => {
+    try {
+        const data = await axiosInstances.get('/doctoPatient/searchUnassignedPatients', {
+            params: { email }
+        });
+        return data.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+

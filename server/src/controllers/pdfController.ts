@@ -35,7 +35,7 @@ const storage = multer.diskStorage({
     destination: 'pdfUpload',
     filename: function (req: Request, file: Express.Multer.File, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, uniqueSuffix + '-' + file.originalname);
+        cb(null, file.originalname + '-' + uniqueSuffix);
     }
 })
 
@@ -77,27 +77,27 @@ const upload = multer({
 
 const uploadPdf = async (req: Request, res: Response) => {
     try {
-        const result = await new Promise<string | { message: string, success: boolean }>((resolve, reject) => {
+        const result = await new Promise<string | { message: string, success: boolean, fileName: string }>((resolve, reject) => {
             upload(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
-                    return reject({ message: err.message, success: false });
+                    return reject({ message: err.message, fileName: '', success: false });
                 } else if (err) {
-                    return reject({ message: err.message, success: false });
+                    return reject({ message: err.message, fileName: '', success: false });
                 } else {
                     if (req.file === undefined) {
-                        return reject({ message: 'No file selected', success: false });
+                        return reject({ message: 'No file selected', fileName: '', success: false });
                     } else {
                         const filePath = path.join(__dirname, '../../', 'pdfUpload', req.file.filename);
+                        const fileName = req.file.originalname;
                         uploadToCloud(filePath)
                             .then((url) => {
-                                // console.log(url);
                                 fs.unlink(filePath, (err) => {
                                     if (err) throw err;
                                 });
-                                return resolve({ message: url, success: true });
+                                return resolve({ message: url, fileName: fileName, success: true });
                             })
                             .catch((uploadError) => {
-                                return reject({ message: uploadError.message, success: false });
+                                return reject({ message: uploadError.message, fileName: '', success: false });
                             });
                     }
                 }
@@ -121,23 +121,17 @@ const uploadPdf = async (req: Request, res: Response) => {
 export const uploadDrFile = async (req: Request, res: Response) => {
     try {
         const id = req.body.id;
-        // const name = req.body.name;
-        const name = 'Hemant Resume';
-        // console.log();
-        // console.log('126', name);
-        console.log(req.body);
-        const url = await uploadPdf(req, res);
-        // console.log(url);
-        if (!url.success) {
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(url.message);
+        const data = await uploadPdf(req, res);
+        if (!data.success) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(data.message);
         } else {
             const result = pdfRepository.create({
                 doctor: id,
-                filePath: url.message,
-                name: name
+                filePath: data.message,
+                name: data.fileName
             })
             await pdfRepository.save(result);
-            res.status(StatusCodes.CREATED).send('pdf uploaded successfully');
+            res.status(StatusCodes.CREATED).send({ message: 'pdf uploaded successfully', success: true });
         }
     } catch (error: any) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error.message);
@@ -151,7 +145,10 @@ export const getDrFile = async (req: Request, res: Response) => {
         const data = await pdfRepository.find({
             where: { doctor: { id: id } },
             skip: (page - 1) * 4,
-            take: 4
+            take: 4,
+            order: {
+                createdAt: "DESC"
+            }
         });
 
         res.status(StatusCodes.OK).send({ success: true, data: data });

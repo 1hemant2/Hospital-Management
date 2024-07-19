@@ -157,6 +157,29 @@ export const getDrFile = async (req: Request, res: Response) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ success: false, message: 'something went wrong' });
     }
 }
+export const searchDrFile = async (req: Request, res: Response) => {
+    try {
+        const id = req.body.id;
+        const name: string = req.body.name;
+        if (!name) {
+            throw { statusCode: StatusCodes.NOT_FOUND, message: 'No file found' }
+        }
+        let page: number = 1;
+        const data = await pdfRepository.find({
+            where: { doctor: { id: id }, name: name },
+            skip: (page - 1) * 4,
+            take: 4,
+            order: {
+                createdAt: "DESC"
+            }
+        });
+
+        res.status(StatusCodes.OK).send({ success: true, data: data });
+    } catch (error: any) {
+        console.log(error);
+        res.status(error.statuCode).send({ success: false, error: error.message });
+    }
+}
 export const getTotalPage = async (req: Request, res: Response) => {
     try {
         const id = req.body.id;

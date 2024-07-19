@@ -38,6 +38,31 @@ export const unassignedPatients = async (req: Request, res: Response) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error, success: false });
     }
 }
+export const searchUnassignedPatients = async (req: Request, res: Response) => {
+    try {
+        let page: number = 1;
+        const email = req.body.email;
+        if (!email) {
+            throw { statusCode: StatusCodes.NOT_FOUND, message: 'enter valid email please' }
+        }
+        const patientRepository = AppDataSource.getRepository(Patient);
+        const query = patientRepository.createQueryBuilder('patient')
+            .leftJoinAndSelect('patient.doctorPatient', 'doctorPatient')
+            .where('doctorPatient.id IS NULL')
+            .andWhere('patient.email = :email', { email })
+            .skip((page - 1) * 4)
+            .take(4)
+        let [availablePatients, total] = await query.getManyAndCount();
+        total = total % 4 === 0 ? total / 4 : Math.ceil((total / 4));
+        if (availablePatients) {
+            return res.status(StatusCodes.OK).send({ success: true, availablePatients, total });
+        }
+    } catch (error: any) {
+        res.status(error.statusCode).send({ error, success: false });
+    }
+}
+
+
 
 
 export const assignPatient = async (req: Request, res: Response) => {
@@ -106,6 +131,35 @@ export const assignedPatients = async (req: Request, res: Response) => {
         return res.status(statusCode).send({ message: error.message || 'Internal Server Error', success: false })
     }
 }
+
+
+export const searchAssignedPatients = async (req: Request, res: Response) => {
+    try {
+        const doctorId = req.body.id;
+        const email = req.body.email;
+        let page: number = 1;
+        if (!doctorId) {
+            throw { statusCode: StatusCodes.BAD_REQUEST, message: 'doctorid is  required' };
+        }
+        const [patients, count] = await DoctorPatientRepository.findAndCount({
+            where: { doctor: { id: doctorId }, patient: { email: email } },
+            relations: ['patient'],
+            skip: (page - 1) * 4,
+            take: 4
+        });
+        const totalPage = count % 4 === 0 ? count / 4 : Math.ceil(count / 4);
+        if (patients) {
+            return res.status(StatusCodes.OK).send({ success: true, data: patients, totalPage });
+        } else {
+            throw { message: 'something went wrong', statusCode: StatusCodes.INTERNAL_SERVER_ERROR };
+        }
+    } catch (error: any) {
+        statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR; // Set a default status code
+        return res.status(statusCode).send({ message: error.message || 'Internal Server Error', success: false })
+    }
+}
+
+
 
 export const assignedDoctor = async (req: Request, res: Response) => {
     try {

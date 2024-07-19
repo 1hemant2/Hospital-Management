@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { loginApi } from '../../api/patientApi';
 import Alert from '../../component/Alert';
+import { useUserDetils } from '../../hooks/useCurrentUser';
 
 
 interface LoginData {
@@ -12,6 +13,13 @@ interface LoginData {
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
+    const user = useUserDetils();
+    console.log(user);
+    if (user) {
+        if (!user.specialty) {
+            navigate('/pt');
+        }
+    }
     const [showAlert, setShowAlert] = useState(false);
     const [message, setMessage] = useState('');
     const [data, setData] = useState<LoginData>({
@@ -29,6 +37,7 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         try {
             const res = await loginApi(data);
             console.log(res);

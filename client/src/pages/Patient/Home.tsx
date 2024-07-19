@@ -16,10 +16,20 @@ interface DoctorProperties {
 }
 
 const Home: React.FC = () => {
-    const data = useUserDetils();
-
-    const [doctor, setDoctor] = useState<DoctorProperties>();
     const navigate = useNavigate();
+    const [doctor, setDoctor] = useState<DoctorProperties>();
+    const data = useUserDetils();
+    if (data) {
+        if (data?.specialty) {
+            navigate('/dr/login');
+        }
+    } else {
+        navigate('/');
+    }
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/');
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,15 +47,15 @@ const Home: React.FC = () => {
 
         fetchData();
     }, []);
-
-    if (!data) {
-        navigate('/pt/login');
-    } else if (data?.specialty) {
-        navigate('/pt/login');
-    }
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/');
+        }
+    }, []);
 
     return (
-        <div>
+        <div className=''>
             <div className="border-t border-gray-300 shadow-md p-2">
                 <div className="flex m-3 justify-between">
                     <div className="flex m-3 justify-between items-center">
@@ -59,7 +69,7 @@ const Home: React.FC = () => {
                         </svg>
                         <p className="text-3xl font-semibold ml-2">Welcome, {data?.firstName}</p>
                     </div>
-                    <button className="bg-[#2b2a2a] text-white rounded-md shadow-md p-2" onClick={() => navigate('/')}>
+                    <button className="bg-[#2b2a2a] text-white rounded-md shadow-md p-2" onClick={handleLogout}>
                         Logout
                     </button>
                 </div>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { loginApi } from '../../api/doctorApi';
 import Alert from '../../component/Alert';
+import { useUserDetils } from '../../hooks/useCurrentUser';
 
 
 interface LoginData {
@@ -18,7 +19,10 @@ const Login: React.FC = () => {
         email: '',
         password: ''
     });
-
+    const user = useUserDetils();
+    if (user?.specialty) {
+        navigate('/dr');
+    }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setData(prevData => ({

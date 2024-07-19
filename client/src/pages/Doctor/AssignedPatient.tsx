@@ -43,30 +43,31 @@ const AssignedPatient: React.FC = () => {
     }, [currentPage]);
     return (
         <div>
-            <div className='flex-grow'>
-                <button className='max-w-md bg-[#2b2a2a] text-white p-2 pl-4 pr-4 m-4 mt-6 rounded-md shadow-md '
-                    onClick={() => navigate('/dr')}>Back to Dashboard</button>
-                <div className="flex justify-center">
-                    <div className="md:max-w-4xl  flex flex-col items-center ">
-                        <SearchBar placeholderValue="Search by patient email..." action='searchAssignPatients' fn={searchAssignPatient} />
-                        <div className="grid grid-cols-1 sm:grid-cols-2 mt-16 gap-y-5 gap-x-4 mb-6">
-                            {
-                                data?.map((d: any) => (
-                                    <>
-                                        <Card3 email={d.patient.email} firstName={d.patient.firstName} lastName={d.patient.lastName} id={d.patient.id} />
-                                    </>
-                                ))
-                            }
-                        </div>
-                        <Pagination
-                            currentPage={currentPage}
-                            totalPages={totalPage}
-                            onPageChange={handlePageChange}
-                        />
+            <button className='max-w-md bg-[#2b2a2a] text-white p-2 pl-4 pr-4 m-4 mt-6 rounded-md shadow-md '
+                onClick={() => navigate('/dr')}>Back to Dashboard</button>
+            <div className="flex justify-center sm:h-[560px]">
+                <div className="md:max-w-4xl  flex flex-col items-center ">
+                    <SearchBar placeholderValue="Search by patient email..." action='searchAssignPatients' fn={searchAssignPatient} />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 mt-16 gap-y-5 gap-x-4 mb-6">
+                        {
+                            data?.map((d: any) => (
+                                <>
+                                    <Card3 email={d.patient.email} firstName={d.patient.firstName} lastName={d.patient.lastName} id={d.patient.id} />
+                                </>
+                            ))
+                        }
                     </div>
+
                 </div>
             </div>
-            <div className='mt-5'>
+            <div className='flex flex-col items-center'>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPage}
+                    onPageChange={handlePageChange}
+                />
+            </div>
+            <div className='mt-auto'>
                 <Footer></Footer>
             </div>
         </div>

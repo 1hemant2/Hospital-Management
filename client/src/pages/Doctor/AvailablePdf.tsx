@@ -58,9 +58,9 @@ const AvailablePdf: React.FC = () => {
 
 
     return (
-        <div>
+        <div className="">
             <button className='max-w-md bg-[#2b2a2a] text-white p-2 pl-4 pr-4 m-4 mt-6 rounded-md shadow-md' onClick={() => navigate('/dr')}>Back to Dashboard</button>
-            <div className="flex justify-center">
+            <div className="flex justify-center sm:h-[560px]">
                 <div className="md:max-w-4xl   flex flex-col items-center ">
                     <SearchBar placeholderValue="Search by pdf name..." action='searchPdf' fn={searchPdfFn} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 mt-16 gap-y-5 gap-x-4 mb-6">
@@ -71,16 +71,20 @@ const AvailablePdf: React.FC = () => {
                         }
 
                     </div>
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={handlePageChange}
-                    />
                 </div>
             </div>
-            <div className='mt-5'></div>
-            <Footer></Footer>
+            <div className='flex flex-col items-center'>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                />
+            </div>
+            <div className='mt-auto'>
+                <Footer></Footer>
+            </div>
         </div>
+
     );
 };
 

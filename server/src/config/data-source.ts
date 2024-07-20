@@ -5,7 +5,23 @@ import { Patient } from "../models/Patient";
 import { Pdf } from "../models/Pdf";
 import { DoctorPatient } from "../models/DoctorPatient";
 
+//setup for cloud
+export const AppDataSource = new DataSource({
+    type: "postgres",
+    url: process.env.DATABASE_URL,
+    synchronize: true,
+    logging: false,
+    entities: [Doctor, Patient, Pdf, DoctorPatient],
+    migrations: [],
+    subscribers: [],
+    extra: {
+        ssl: {
+            rejectUnauthorized: false, // This is often necessary for development; set to true in production if possible
+        },
+    },
+});
 
+/* setup for local host
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
@@ -19,6 +35,7 @@ export const AppDataSource = new DataSource({
     migrations: [],
     subscribers: [],
 });
+*/
 
 AppDataSource.initialize()
     .then(() => {

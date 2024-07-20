@@ -2,8 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { loginApi } from '../../api/doctorApi';
-import Alert from '../../component/Alert';
 import { useUserDetils } from '../../hooks/useCurrentUser';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 interface LoginData {
@@ -18,8 +19,7 @@ interface LoginData {
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
-    const [showAlert, setShowAlert] = useState(false);
-    const [message, setMessage] = useState('');
+
     const [data, setData] = useState<LoginData>({
         email: '',
         password: ''
@@ -57,17 +57,15 @@ const Login: React.FC = () => {
                 navigate('/dr');
             }
         } catch (error: any) {
-            setMessage(error.message);
-            setShowAlert(true);
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 2000);
+            toast.error(error.message, {
+                position: "top-center",
+            });
         }
     };
 
     return (
         <div className="flex justify-center items-center h-screen bg-blue p-4 sm:p-00">
-            <Alert message={message} showAlert={showAlert}></Alert>
+            <ToastContainer />
             <div className="border border-gray-300 bg-white rounded-lg shadow-lg sm:p-8 pt-16 pb-16 flex flex-col max-w-md w-full space-y-6">
                 <h2 className="text-2xl font-bold text-center">Doctor Login</h2>
                 <form onSubmit={handleSubmit} className="flex flex-col space-y-6 p-4">

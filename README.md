@@ -68,3 +68,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Contact
 For any queries, please contact [Hemant Kumar] at [hk443957@gmail.com].
+
+## hosted site 
+https://hospital-management-1-556s.onrender.com/ 

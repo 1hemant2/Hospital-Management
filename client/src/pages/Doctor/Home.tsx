@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Card1 from '../../component/Card1';
 import Footer from '../../component/Footer';
 import { useUserDetils } from '../../hooks/useCurrentUser';

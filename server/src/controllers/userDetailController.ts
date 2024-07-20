@@ -11,6 +11,20 @@ let statusCode: number;
 let message: string;
 let success: boolean;
 
+/**
+ * Retrieves user details based on the provided ID.
+ *
+ * This function checks if a user with the specified `id` exists in either the `doctorRepository` or `patientRepository`.
+ * If the user is found in the `doctorRepository`, it returns the doctor's details. If the user is found in the `patientRepository`,
+ * it returns the patient's details. If the user is not found in either repository, it returns a "user doesn't exist" message.
+ *
+ * @param {Request} req - The request object, containing the user `id` in the body.
+ * @param {Response} res - The response object used to send the response.
+ * @returns {Promise<void>} - A promise that resolves when the user details have been retrieved and the response has been sent.
+ *
+ * @throws {Error} - If an error occurs during the retrieval of user details or if the user does not exist.
+ */
+
 export const userDetails = async (req: Request, res: Response) => {
     try {
         const input = req.body;
@@ -27,6 +41,7 @@ export const userDetails = async (req: Request, res: Response) => {
             throw { message, StatusCodes, success }
         }
     } catch (error: any) {
-        res.status(error.statusCode).send({ message, success })
+        statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+        res.status(error.statusCode).send({ message: message || 'something went wrong', success: false })
     }
 }

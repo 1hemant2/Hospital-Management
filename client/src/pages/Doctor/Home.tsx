@@ -7,6 +7,16 @@ import { uploadPdfApi } from '../../api/pdfApi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+/**
+ * A React functional component that represents the home page for a user, displaying user details,
+ * available patients, assigned patients, and options to upload and view PDFs.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <Home />
+ * );
+ */
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const data = useUserDetils();
@@ -18,17 +28,19 @@ const Home: React.FC = () => {
     } else {
         navigate('/');
     }
+
+    /**
+     * Handles user logout by removing the token from local storage and navigating to the home page.
+     */
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/');
     }
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/');
-        }
-    }, []);
+
+    /**
+    * Opens a file dialog for uploading PDFs and handles the file upload process.
+    */
     const uploadPdfFn = () => {
         // console.log('upload Pdf');
         const input = document.createElement('input');
@@ -40,14 +52,13 @@ const Home: React.FC = () => {
         input.addEventListener('change', async (event) => {
             const file = (event.target as HTMLInputElement).files?.[0];
             if (file) {
-                toast.dark('uploading....', {
-                    position: "top-center", // Explicitly cast as ToastPosition
+                toast.dark('uploading...., you will notify after uploaded', {
+                    position: "top-center",
                 });
-                console.log('Selected file:', file.name);
                 const res = await uploadPdfApi({ name: file.name, pdf: file });
                 if (res.success) {
                     toast.success('file uploading successfully', {
-                        position: "top-center", // Explicitly cast as ToastPosition
+                        position: "top-center",
                     });
                 }
                 console.log(res);
@@ -58,6 +69,12 @@ const Home: React.FC = () => {
         input.click();
     }
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/');
+        }
+    }, []);
     return (
         <div>
             <ToastContainer />

@@ -6,14 +6,15 @@ import cloudinary from "../config/cloudinary";
 import fs from "fs";
 import { Pdf } from "../models/Pdf";
 import { AppDataSource } from "../config/data-source";
-import { STATUS_CODES } from "http";
 const pdfRepository = AppDataSource.getRepository(Pdf);
 
 
 /**
- * function to store pdf to cloud.
+ * Function to store PDF to Cloudinary.
  * 
- * @returns If successful, returns a url of pdf; otherwise, returns an error message .
+ * @param {string} filePath - The path of the file to be uploaded.
+ * @returns {Promise<string>} If successful, returns the URL of the uploaded PDF; otherwise, throws an error message.
+ * @throws {Error} If the file upload fails.
  */
 
 const uploadToCloud = async (filePath: any): Promise<string> => {
@@ -28,9 +29,9 @@ const uploadToCloud = async (filePath: any): Promise<string> => {
 };
 
 /**
- * function to set the destination of file in server.
+ * Multer configuration for setting the destination and filename of the uploaded file.
  * 
- * @returns If successful, returns a void ; otherwise, returns an error message  .
+ * @returns {void} Configures multer with the destination and filename for storing the uploaded PDF.
  */
 const storage = multer.diskStorage({
     destination: 'pdfUpload',
@@ -41,9 +42,11 @@ const storage = multer.diskStorage({
 })
 
 /**
- * function to check if file is type of pdf.
- * @params - {file}
- * @returns If successful, returns a void; otherwise, returns an error message .
+ * Function to check if the uploaded file is of type PDF.
+ * 
+ * @param {Express.Multer.File} file - The file to be checked.
+ * @param {FileFilterCallback} cb - The callback to be called after the check.
+ * @returns {void} Calls the callback with an error if the file is not a PDF.
  */
 const checkFileType = (file: Express.Multer.File, cb: FileFilterCallback): void => {
     const extname = path.extname(file.originalname).toLowerCase();
@@ -55,10 +58,9 @@ const checkFileType = (file: Express.Multer.File, cb: FileFilterCallback): void 
 }
 
 /**
- * function to ensure single pdf selected & accept.
- * @params -{storage,fileFilter}
- * @returns If successful, returns a void; otherwise, returns an error message .
+ * Multer configuration to ensure a single PDF file is selected and accepted.
  * 
+ * @returns {void} Configures multer with storage and file filter for uploading a single PDF.
  */
 
 const upload = multer({
@@ -69,11 +71,14 @@ const upload = multer({
 }).single('pdf');
 
 
+
 /**
- * function to store pdf to server.
+ * Function to handle PDF upload and store it on the server.
  * 
- * @params {req.file}
- * @returns If successful, returns a url of pdf; otherwise, returns an error message .
+ * @param {Request} req - The request object containing the file to be uploaded.
+ * @param {Response} res - The response object.
+ * @returns {Promise<string | { message: string, success: boolean, fileName: string }>} If successful, returns the URL of the uploaded PDF; otherwise, returns an error message.
+ * @throws {Error} If the file upload fails.
  */
 
 const uploadPdf = async (req: Request, res: Response) => {
@@ -124,7 +129,7 @@ export const uploadDrFile = async (req: Request, res: Response) => {
         const id = req.body.id;
         const data = await uploadPdf(req, res);
         if (!data.success) {
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(data.message);
+            res.status(StatusCodes.BAD_REQUEST).send(data.message);
         } else {
             const result = pdfRepository.create({
                 doctor: id,
@@ -139,6 +144,18 @@ export const uploadDrFile = async (req: Request, res: Response) => {
     }
 }
 
+/**
+ * Uploads a PDF file for a doctor.
+ *
+ * This function handles the upload of a PDF file for a doctor specified by the `id` in the request body.
+ * It uses the `uploadPdf` function to handle the file upload and saves the file information in the `pdfRepository`.
+ *
+ * @param {Request} req - The request object, containing the `id` of the doctor in the body.
+ * @param {Response} res - The response object used to send the response.
+ * @returns {Promise<void>} - A promise that resolves when the file has been uploaded and the response has been sent.
+ *
+ * @throws {Error} - If an error occurs during the file upload or saving the file information.
+ */
 export const getDrFile = async (req: Request, res: Response) => {
     try {
         const id = req.body.id;
@@ -158,6 +175,20 @@ export const getDrFile = async (req: Request, res: Response) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ success: false, message: 'something went wrong' });
     }
 }
+
+/**
+ * Searches for a PDF file for a doctor by name.
+ *
+ * This function handles the search for a PDF file based on the doctor's `id` in the request body
+ * and the `name` query parameter. It retrieves the file information from the `pdfRepository`.
+ *
+ * @param {Request} req - The request object, containing the `id` of the doctor in the body and the `name` of the file in the query parameters.
+ * @param {Response} res - The response object used to send the response.
+ * @returns {Promise<void>} - A promise that resolves when the search is complete and the response has been sent.
+ *
+ * @throws {Error} - If an error occurs during the search or if the file name is not provided.
+ */
+
 export const searchDrFile = async (req: Request, res: Response) => {
     try {
         const id = req.body.id;
@@ -174,6 +205,20 @@ export const searchDrFile = async (req: Request, res: Response) => {
         res.status(statuCode).send({ success: false, mesage: error.message || 'Something went wrong' });
     }
 }
+
+/**
+ * Retrieves the total number of pages of PDF files for a doctor.
+ *
+ * This function calculates the total number of pages based on the number of PDF files associated with the doctor
+ * specified by the `id` in the request body. Each page contains up to 4 files.
+ *
+ * @param {Request} req - The request object, containing the `id` of the doctor in the body.
+ * @param {Response} res - The response object used to send the response.
+ * @returns {Promise<void>} - A promise that resolves when the total number of pages has been calculated and the response has been sent.
+ *
+ * @throws {Error} - If an error occurs during the retrieval of PDF files.
+ */
+
 export const getTotalPage = async (req: Request, res: Response) => {
     try {
         const id = req.body.id;

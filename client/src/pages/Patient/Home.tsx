@@ -15,6 +15,17 @@ interface DoctorProperties {
     specialty: string;
 }
 
+/**
+ * Home component for displaying assigned doctor information and motivational cards.
+ * 
+ * This component fetches the assigned doctor details for the current user and displays
+ * motivational cards. It also handles user logout functionality and ensures user
+ * authentication by checking the presence of a token in local storage.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered Home component.
+ */
+
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const [doctor, setDoctor] = useState<DoctorProperties>();
@@ -26,6 +37,10 @@ const Home: React.FC = () => {
     } else {
         navigate('/');
     }
+
+    /**
+     * Handle user logout by removing the token from local storage and navigating to the home page.
+     */
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/');

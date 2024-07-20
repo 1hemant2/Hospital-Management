@@ -6,15 +6,38 @@ import Footer from '../../component/Footer';
 import { useNavigate } from 'react-router-dom';
 import { avilablePatientApi, searchAvailablePatientApi } from '../../api/doctorPatientApi';
 
+/**
+ * A React functional component that displays a list of available patients with search and pagination functionalities.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <AvailablePatient />
+ * );
+ */
 const AvailablePatient: React.FC = () => {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [totalPage, setTotlaPage] = useState<number>(5);
 
+    /**
+    * Handles page change by updating the current page state.
+    * 
+    * @param {number} page - The new page number to be set.
+    */
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+
+    /**
+     * Fetches available patients for the current page and updates state.
+     * Handles API errors but does not modify the state on failure.
+     * 
+     * @async
+     * @function availabePatientsFn
+     * @returns {Promise<void>} A promise that resolves when the patient data is fetched and set.
+     */
     const availabePatientsFn = async () => {
         try {
             const res = await avilablePatientApi(currentPage);
@@ -25,6 +48,14 @@ const AvailablePatient: React.FC = () => {
         } catch (error: any) {
         }
     }
+    /**
+     * Searches for available patients based on the input value and updates state with search results.
+     * 
+     * @async
+     * @function searchAvailablePatient
+     * @param {string} input - The search input value.
+     * @returns {Promise<void>} A promise that resolves when the search results are fetched and set.
+     */
     const searchAvailablePatient = async (input: string) => {
         try {
             const res = await searchAvailablePatientApi(input);

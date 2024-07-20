@@ -7,15 +7,38 @@ import { getPdfApi, searchPdfApi, totalPageApi } from '../../api/pdfApi';
 import { useNavigate } from 'react-router-dom';
 
 
+/**
+ * A React functional component that displays a list of available PDFs with search and pagination functionalities.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <AvailablePdf />
+ * );
+ */
+
 const AvailablePdf: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [totalPages, setTotlaPages] = useState<number>(0);
     const navigate = useNavigate()
 
+    /**
+     * Handles page change by updating the current page state.
+     * 
+     * @param {number} page - The new page number to be set.
+     */
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+    /**
+    * Fetches PDFs for the current page and updates state.
+    * Handles API errors but does not modify the state on failure.
+    * 
+    * @async
+    * @function getPdf
+    * @returns {Promise<void>} A promise that resolves when the PDF data is fetched and set.
+    */
     const getPdf = async () => {
         try {
             const res = await getPdfApi(currentPage);
@@ -29,6 +52,13 @@ const AvailablePdf: React.FC = () => {
             console.log(error.message);
         }
     }
+    /**
+    * Fetches the total number of pages for the PDFs and updates state.
+    * 
+    * @async
+    * @function totalPageFn
+    * @returns {Promise<void>} A promise that resolves when the total pages are fetched and set.
+    */
     const totalPageFn = async () => {
         try {
             const res = await totalPageApi();
@@ -38,6 +68,14 @@ const AvailablePdf: React.FC = () => {
         }
 
     }
+    /**
+     * Searches for PDFs based on the input value and updates state with search results.
+     * 
+     * @async
+     * @function searchPdfFn
+     * @param {string} input - The search input value.
+     * @returns {Promise<void>} A promise that resolves when the search results are fetched and set.
+     */
     const searchPdfFn = async (input: string) => {
         try {
             const res = await searchPdfApi(input);

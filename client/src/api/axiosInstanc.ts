@@ -1,3 +1,7 @@
+/**
+ * setup for sending jwt token for each request 
+ */
+
 import axios from "axios";
 import { baseUrl } from "./baseUrl";
 

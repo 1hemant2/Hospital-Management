@@ -10,6 +10,17 @@ interface RegisterData {
     password: string;
 }
 
+/**
+ * Register component for patient sign-up.
+ * 
+ * @component
+ * @returns {React.FC} React Functional Component
+ * 
+ * The Register component handles the user registration functionality for patients. It manages
+ * the registration form state, handles form submission, and navigates the user based on the
+ * registration response.
+ */
+
 const Register: React.FC = () => {
     const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false);
@@ -23,6 +34,12 @@ const Register: React.FC = () => {
         }
     );
 
+    /**
+     * Handles input change events and updates the form data state.
+     * 
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event
+     */
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setData(prevData => ({
@@ -31,6 +48,12 @@ const Register: React.FC = () => {
         }));
     };
 
+
+    /**
+     * Handles form submission, calls the register API, and manages navigation and error handling.
+     * 
+     * @param {React.FormEvent<HTMLFormElement>} e - The form submit event
+     */
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(data);

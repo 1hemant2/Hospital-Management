@@ -9,6 +9,20 @@ import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne } from 
 import { Doctor } from './Doctor';
 import { Patient } from './Patient';
 
+/**
+ * Represents the relationship between a Doctor and a Patient.
+ * 
+ * @entity DoctorPatient
+ * @description This entity captures the association between a doctor and a patient, 
+ *             with references to both the doctor and the patient.
+ */
+
+/*
+PRIMARY KEY (DoctorID, PatientID),
+FOREIGN KEY (DoctorID) REFERENCES Doctors(DoctorID),
+FOREIGN KEY (PatientID) REFERENCES Patients(PatientID)
+*/
+
 
 @Entity()
 export class DoctorPatient {

@@ -2,6 +2,20 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserDetils } from '../hooks/useCurrentUser';
 
+
+/**
+ * Home component that serves as the landing page for the application.
+ * It checks the current user's details and navigates to the appropriate
+ * login page based on whether the user has a specialty or not.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Home />
+ * )
+ */
+
+
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const user = useUserDetils();
@@ -33,7 +47,3 @@ const Home: React.FC = () => {
 };
 
 export default Home;
-
-/**
- * background-image: linear-gradient(to right top, #848485, #999a9c, #aeb0b4, #c3c7cc, #d8dfe5);
- */

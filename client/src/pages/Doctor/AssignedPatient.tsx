@@ -12,9 +12,22 @@ const AssignedPatient: React.FC = () => {
     const [data, setData] = useState([]);
     const [totalPage, setTotlaPage] = useState<number>(0);
 
+    /**
+     * Handles page change by updating the current page state.
+     * 
+     * @param {number} page - The new page number to be set.
+     */
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+    /**
+     * Fetches assigned patients for the current page and updates state.
+     * Handles API errors and logs error messages.
+     * 
+     * @async
+     * @function assignPatientsFn
+     * @returns {Promise<void>} A promise that resolves when the patient data is fetched and set.
+     */
     const assignPatientsFn = async () => {
         try {
             const res = await assignedPatientsApi(currentPage);
@@ -28,6 +41,14 @@ const AssignedPatient: React.FC = () => {
             console.log(error.message);
         }
     }
+    /**
+    * Searches for assigned patients based on the input value and updates state with search results.
+    * 
+    * @async
+    * @function searchAssignPatient
+    * @param {string} input - The search input value.
+    * @returns {Promise<void>} A promise that resolves when the search results are fetched and set.
+    */
     const searchAssignPatient = async (input: string) => {
         try {
             const res = await searchAssignedPatientApi(input);

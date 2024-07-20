@@ -11,10 +11,22 @@ interface LoginData {
     password: string;
 }
 
+
+/**
+ * Login component for patient authentication.
+ * 
+ * @component
+ * @returns {React.FC} React Functional Component
+ * 
+ * The Login component handles the user login functionality for patients. It manages
+ * the login form state, handles form submission, and navigates the user based on the login
+ * response. If the user is already logged in and lacks a specialty, they are redirected to
+ * a specific route.
+ */
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const user = useUserDetils();
-    console.log(user);
+    // console.log(user);
     if (user) {
         if (!user.specialty) {
             navigate('/pt');
@@ -27,6 +39,12 @@ const Login: React.FC = () => {
         password: ''
     });
 
+
+    /**
+    * Handles input change events and updates the form data state.
+    * 
+    * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event
+    */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setData(prevData => ({
@@ -35,6 +53,11 @@ const Login: React.FC = () => {
         }));
     };
 
+    /**
+     * Handles form submission, calls the login API, and manages navigation and error handling.
+     * 
+     * @param {React.FormEvent<HTMLFormElement>} e - The form submit event
+     */
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 

@@ -11,6 +11,11 @@ interface LoginData {
     password: string;
 }
 
+/**
+ * Login component for doctors.
+ * @returns {JSX.Element} The rendered Login component.
+ */
+
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false);
@@ -23,6 +28,11 @@ const Login: React.FC = () => {
     if (user?.specialty) {
         navigate('/dr');
     }
+
+    /**
+    * Handles input change and updates the state.
+    * @param {React.ChangeEvent<HTMLInputElement>} e - The change event of the input.
+    */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setData(prevData => ({
@@ -31,6 +41,10 @@ const Login: React.FC = () => {
         }));
     };
 
+    /**
+    * Handles form submission and login process.
+    * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+    */
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {

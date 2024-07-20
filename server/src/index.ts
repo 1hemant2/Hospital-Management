@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
-
 import { AppDataSource } from "./config/data-source";
 import doctorRoutes from './routes/doctorRoute';
 import pdfRoutes from './routes/pdfRoute';

@@ -25,7 +25,6 @@ function App() {
         <Route path="pt/login" element={<PtLogin></PtLogin>}></Route>
         <Route path="/pt" element={<PtHome></PtHome>}></Route>
         <Route path="/" element={<Home></Home>}></Route>
-
       </Routes>
     </BrowserRouter>
   )

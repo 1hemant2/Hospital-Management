@@ -11,6 +11,10 @@ interface RegisterData {
     specialty: string;
 }
 
+/**
+ * Register component for doctors.
+ * @returns {JSX.Element} The rendered Register component.
+ */
 const Register: React.FC = () => {
     const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false);
@@ -25,6 +29,10 @@ const Register: React.FC = () => {
         }
     );
 
+    /**
+    * Handles input change and updates the state.
+    * @param {React.ChangeEvent<HTMLInputElement>} e - The change event of the input.
+    */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setData(prevData => ({
@@ -33,6 +41,11 @@ const Register: React.FC = () => {
         }));
     };
 
+
+    /**
+     * Handles form submission and registration process.
+     * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+     */
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {

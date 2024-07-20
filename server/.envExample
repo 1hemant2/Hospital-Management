@@ -1,0 +1,6 @@
+# PORT=8081
+SECRET_KEY='23roj9jojl3dsaDeasdfdsaff'
+CLOUDINARY_NAME=dsqkqk8tz
+CLOUDINARY_KEY=144112376773227
+CLOUDINARY_SECRET=2hz0VbrPwB83-7PgAy70TtgD4OI
+DATABASE_URL=postgresql://localhostathemant_user:PDuW2NLGSoNndyzaafnR4LqCWrNsNc8J@dpg-cqdorr0gph6c73aa8ing-a.oregon-postgres.render.com/localhostathemant

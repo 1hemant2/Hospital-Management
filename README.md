@@ -38,22 +38,23 @@ https://github.com/1hemant2/Hospital-Management.git
 2. **Set up the frontend:**
 cd client
 npm install
+3. change base url to http://localhost:8084 src/api/baseurl
 npm run dev
 
-3. **Set up the backend:**
+4. **Set up the backend:**
 Open a new terminal in the main folder and run:
 cd server
 npm install
 
-4. **Configure the environment:**
+5. **Configure the environment:**
 - In the `server` folder, create a `.env` file using `.env.example` as a template.
 - Fill in the necessary environment variables.
 
-5. **Configure the database connection:**
+6. **Configure the database connection:**
 - In `src/config/data-source.ts`, uncomment the local `AppDataSource` configuration.
 - Comment out the cloud setup configuration.
 
-6. **Start the backend server:**
+7. **Start the backend server:**
 npm run dev
 
 ## Usage

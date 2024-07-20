@@ -21,7 +21,7 @@ const Card3: React.FC<Card1Props> = ({ firstName, lastName, email, id }) => {
                 setDivDisabled(true);
             }
         } catch (error: any) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     };
 

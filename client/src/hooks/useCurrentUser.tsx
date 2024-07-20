@@ -14,9 +14,6 @@ interface UserDetails {
  * @example
  * const userDetails = useUserDetails();
  * 
- * if (userDetails) {
- *     console.log(userDetails.firstName);
- * }
  */
 export const useUserDetils = () => {
     const [data, setData] = useState<UserDetails | null>(null);
@@ -37,7 +34,7 @@ export const useUserDetils = () => {
                 throw { res };
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             setData(null);
         }
     }

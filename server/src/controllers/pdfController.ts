@@ -171,7 +171,7 @@ export const getDrFile = async (req: Request, res: Response) => {
 
         res.status(StatusCodes.OK).send({ success: true, data: data });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ success: false, message: 'something went wrong' });
     }
 }
@@ -228,7 +228,7 @@ export const getTotalPage = async (req: Request, res: Response) => {
         const sz = data.length % 4 === 0 ? data.length / 4 : (data.length / 4) + 1;
         res.status(StatusCodes.OK).send({ success: true, data: sz });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ success: false, message: 'something went wrong' });
     }
 }

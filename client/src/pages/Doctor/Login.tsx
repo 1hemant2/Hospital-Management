@@ -49,7 +49,6 @@ const Login: React.FC = () => {
         e.preventDefault();
         try {
             const res = await loginApi(data);
-            console.log(res);
             if (!res.success) {
                 throw { message: res.message };
             } else {

@@ -56,7 +56,7 @@ const Home: React.FC = () => {
                     throw res;
                 }
             } catch (error) {
-                console.log('Error fetching assigned doctor:', error);
+                // console.log('Error fetching assigned doctor:', error);
             }
         };
 

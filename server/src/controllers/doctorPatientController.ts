@@ -236,7 +236,7 @@ export const searchAssignedPatients = async (req: Request, res: Response) => {
     try {
         const doctorId: string = req.body.id;
         const email: string | undefined = req.query.email as string;
-        console.log(email);
+        // console.log(email);
         if (!email) {
             throw { statusCode: StatusCodes.BAD_REQUEST, message: 'Enter a valid email, please' };
         }
@@ -293,7 +293,7 @@ export const searchAssignedPatients = async (req: Request, res: Response) => {
 export const assignedDoctor = async (req: Request, res: Response) => {
     try {
         const patientId = req.body.id;
-        console.log(patientId);
+        // console.log(patientId);
         if (!patientId) {
             throw { statusCode: StatusCodes.BAD_REQUEST, message: 'patiendId is  required' };
         }

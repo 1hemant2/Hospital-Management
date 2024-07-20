@@ -19,7 +19,7 @@ import { useUserDetils } from '../hooks/useCurrentUser';
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const user = useUserDetils();
-    console.log(user);
+    // console.log(user);
     if (user) {
         if (user.specialty) {
             navigate('/dr/login');

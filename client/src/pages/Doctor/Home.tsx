@@ -42,7 +42,6 @@ const Home: React.FC = () => {
     * Opens a file dialog for uploading PDFs and handles the file upload process.
     */
     const uploadPdfFn = () => {
-        // console.log('upload Pdf');
         const input = document.createElement('input');
         input.type = 'file';
 
@@ -61,7 +60,6 @@ const Home: React.FC = () => {
                         position: "top-center",
                     });
                 }
-                console.log(res);
             }
         });
 

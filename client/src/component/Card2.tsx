@@ -20,7 +20,7 @@ const Card2: React.FC<Card1Props> = ({ firstName, lastName, email, id }) => {
                 setButtonDisabled(true);
             }
         } catch (error: any) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     }
 

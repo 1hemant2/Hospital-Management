@@ -62,7 +62,7 @@ const AvailablePatient: React.FC = () => {
             if (res.success) {
                 setData(res.availablePatients);
             }
-            console.log(res);
+            // console.log(res);
         } catch (error) {
 
         }

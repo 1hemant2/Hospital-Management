@@ -42,14 +42,13 @@ const AvailablePdf: React.FC = () => {
     const getPdf = async () => {
         try {
             const res = await getPdfApi(currentPage);
-            console.log(data);
             if (res.success) {
                 setData(res.data);
             } else {
                 throw { message: res.message };
             }
         } catch (error: any) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     }
     /**
@@ -79,7 +78,6 @@ const AvailablePdf: React.FC = () => {
     const searchPdfFn = async (input: string) => {
         try {
             const res = await searchPdfApi(input);
-            console.log(res);
             if (res.success) {
                 setData(res.data);
             }

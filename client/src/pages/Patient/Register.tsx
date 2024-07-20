@@ -54,10 +54,10 @@ const Register: React.FC = () => {
      */
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(data);
+        // console.log(data);
         try {
             const res = await registerApi(data);
-            console.log(res);
+            // console.log(res);
             if (!res.success) {
                 throw { message: res.message };
             } else {

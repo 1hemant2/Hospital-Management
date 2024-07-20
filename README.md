@@ -25,7 +25,7 @@ The Hospital Management Portal is a web-based application that facilitates commu
 
 ### Prerequisites
 Ensure you have the following tools installed on your system:
-- Node.js (v14 or later)
+- Node.js (v18 or later)
 - npm (v6 or later)
 - PostgreSQL (v12 or later)
 

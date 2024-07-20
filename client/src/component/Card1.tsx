@@ -1,5 +1,4 @@
 import React from 'react';
-import { uploadPdfApi } from '../api/pdfApi';
 import { useNavigate } from 'react-router-dom';
 
 interface Card1Props {

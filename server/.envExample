@@ -1,6 +1,6 @@
 # PORT=8084
-SECRET_KEY='23roj9jojl3dsaDeasdfdsaff'
-CLOUDINARY_NAME=dsqkqk8tz
-CLOUDINARY_KEY=144176773227
-CLOUDINARY_SECRET=2hz0Vb7PgAy70TtgD4OI
-DATABASE_URL=postgresql://localhostathemant_user:PDuW2NLGSafnR4LqCWrNsNc8J@dpg-cqdorr0gph6c73aa8ing-a.oregon-postgres.render.com/localhostathemant
+SECRET_KEY='23roj9jodfdsaff'
+CLOUDINARY_NAME=dsz
+CLOUDINARY_KEY=1447
+CLOUDINARY_SECRET=2hz0V
+DATABASE_URL=postgresql://localhostathemant_user:PDuW2NLa.oregon-postgres.render.com/localhostathemant
